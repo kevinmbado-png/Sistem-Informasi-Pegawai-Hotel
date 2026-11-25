@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Kepegawaian Hotel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">H</div>
+            <div>
+                <h2>HOTELKU</h2>
+                <small>Management System</small>
+            </div>
+        </div>
+
+        <p class="menu-title">MENU UTAMA</p>
+
+        <nav>
+            <a href="#dashboard" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+            <a href="#pegawai" class="nav-link">
+                <span>♙</span> Data Pegawai
+            </a>
+            <a href="#pegawai" class="nav-link" id="menuTambah">
+                <span>＋</span> Tambah Pegawai
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="admin-info">
+                <div class="avatar">AD</div>
+                <div>
+                    <strong>Administrator</strong>
+                    <small>Admin Hotel</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- KONTEN UTAMA -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h2>Dashboard Kepegawaian</h2>
+                <p>Selamat datang di Sistem Informasi Kepegawaian Hotel.</p>
+            </div>
+            <div class="top-date" id="tanggalHariIni"></div>
+        </header>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard">
+            <div class="welcome">
+                <div>
+                    <span>HOTEL EMPLOYEE MANAGEMENT</span>
+                    <h1>Kelola Pegawai Hotel dengan Mudah</h1>
+                    <p>Pantau dan kelola seluruh informasi pegawai hotel dalam satu sistem.</p>
+                </div>
+                <div class="welcome-icon">🏨</div>
+            </div>
+
+            <!-- STATISTIK -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">♙</div>
+                    <p>Total Pegawai</p>
+                    <h2 id="totalPegawai">0</h2>
+                    <small>Seluruh pegawai hotel</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <p>Pegawai Aktif</p>
+                    <h2 id="pegawaiAktif">0</h2>
+                    <small>Pegawai yang bekerja</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">◷</div>
+                    <p>Pegawai Nonaktif</p>
+                    <h2 id="pegawaiNonaktif">0</h2>
+                    <small>Pegawai tidak aktif</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">▤</div>
+                    <p>Departemen</p>
+                    <h2 id="totalDepartemen">0</h2>
+                    <small>Bidang pekerjaan</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATA PEGAWAI -->
+        <section class="employee-section" id="pegawai">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Data Pegawai Hotel</h2>
+                    <p>Kelola informasi seluruh pegawai hotel.</p>
+                </div>
+                <button class="btn-primary" id="btnTambah">
+                    ＋ Tambah Pegawai
+                </button>
+            </div>
+
+            <div class="toolbar">
+                <input type="search" id="cariPegawai"
+                    placeholder="Cari nama atau NIK pegawai...">
+
+                <select id="filterDepartemen">
+                    <option value="">Semua Departemen</option>
+                    <option value="Front Office">Front Office</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                    <option value="Food & Beverage">Food & Beverage</option>
+                    <option value="Security">Security</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Management">Management</option>
+                </select>
+
+                <select id="filterStatus">
+                    <option value="">Semua Status</option>
+                    <option value="Aktif">Aktif</option>
+                    <option value="Nonaktif">Nonaktif</option>
+                </select>
+
+                <button class="btn-export" id="btnExport">
+                    ↓ Export CSV
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama Pegawai</th>
+                            <th>NIK</th>
+                            <th>Jabatan</th>
+                            <th>Departemen</th>
+                            <th>No. HP</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelPegawai">
+                    </tbody>
+                </table>
+
+                <div id="pesanKosong" class="empty-message" hidden>
+                    Data pegawai tidak ditemukan.
+                </div>
+            </div>
+        </section>
+
+        <!-- FORM TAMBAH DAN EDIT -->
+        <div class="modal" id="modalPegawai">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <div>
+                        <h2 id="judulForm">Tambah Pegawai</h2>
+                        <p>Lengkapi informasi pegawai hotel.</p>
+                    </div>
+                    <button type="button" class="close-btn"
+                        id="btnTutup">×</button>
+                </div>
+
+                <form id="formPegawai">
+                    <input type="hidden" id="pegawaiId">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="nama">Nama Lengkap *</label>
+                            <input type="text" id="nama"
+                                placeholder="Masukkan nama lengkap" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nik">NIK *</label>
+                            <input type="text" id="nik"
+                                placeholder="Masukkan NIK" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email"
+                                placeholder="contoh@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hp">Nomor HP *</label>
+                            <input type="tel" id="hp"
+                                placeholder="08xxxxxxxxxx" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jabatan">Jabatan *</label>
+                            <select id="jabatan" required>
+                                <option value="">Pilih Jabatan</option>
+                                <option>General Manager</option>
+                                <option>Supervisor</option>
+                                <option>Resepsionis</option>
+                                <option>Housekeeping</option>
+                                <option>Chef / Koki</option>
+                                <option>Waiter / Waitress</option>
+                                <option>Security</option>
+                                <option>Teknisi</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="departemen">Departemen *</label>
+                            <select id="departemen" required>
+                                <option value="">Pilih Departemen</option>
+                                <option>Front Office</option>
+                                <option>Housekeeping</option>
+                                <option>Food & Beverage</option>
+                                <option>Security</option>
+                                <option>Engineering</option>
+                                <option>Management</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tanggalMasuk">Tanggal Masuk *</label>
+                            <input type="date" id="tanggalMasuk" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status Pegawai *</label>
+                            <select id="status" required>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Nonaktif">Nonaktif</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel"
+                            id="btnBatal">Batal</button>
+                        <button type="submit" class="btn-primary">
+                            Simpan Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 Sistem Informasi Kepegawaian Hotel | Dibuat menggunakan HTML, CSS & JavaScript.</p>
+        </footer>
+
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
